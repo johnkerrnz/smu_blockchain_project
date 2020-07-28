@@ -22,7 +22,7 @@ contract Market {
     //Lists the vouchers from organization on the marketplace
     function listVouchers(uint256 orgId, uint256 tokens) public {
       require(orgContract.ownerOf(orgId) == msg.sender, "Only owner can list");
-      diceContract.transferFrom(msg.sender, address(this), orgId);
+        orgContract.transferFrom(msg.sender, address(this), orgId);
      // prevOwner[diceId] = msg.sender;
       listedOrgs[orgId] = tokens;
     }
@@ -45,3 +45,4 @@ contract Market {
     function getContractOwner() public view returns(address) {
        return _owner;
     }
+}

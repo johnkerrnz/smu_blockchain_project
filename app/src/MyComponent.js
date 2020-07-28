@@ -46,7 +46,7 @@ export default ({ drizzle, drizzleState }) => {
       </div>
 
       <div className="section">
-        <h2>OrganizationToken</h2>
+        <h2>OrganizationVoucher</h2>
         <p>
           Here we have a form with custom, friendly labels. Also note the token
           symbol will not display a loading indicator. We've suppressed it with
@@ -58,14 +58,14 @@ export default ({ drizzle, drizzleState }) => {
           <ContractData
             drizzle={drizzle}
             drizzleState={drizzleState}
-            contract="OrganizationToken"
+            contract="OrganizationVoucher"
             method="totalSupply"
             methodArgs={[{ from: drizzleState.accounts[0] }]}
           />{" "}
           <ContractData
             drizzle={drizzle}
             drizzleState={drizzleState}
-            contract="OrganizationToken"
+            contract="OrganizationVoucher"
             method="symbol"
             hideIndicator
           />
@@ -75,7 +75,7 @@ export default ({ drizzle, drizzleState }) => {
           <ContractData
             drizzle={drizzle}
             drizzleState={drizzleState}
-            contract="OrganizationToken"
+            contract="OrganizationVoucher"
             method="balanceOf"
             methodArgs={[drizzleState.accounts[0]]}
           />
@@ -83,7 +83,7 @@ export default ({ drizzle, drizzleState }) => {
         <h3>Send Tokens</h3>
         <ContractForm
           drizzle={drizzle}
-          contract="OrganizationToken"
+          contract="OrganizationVoucher"
           method="transfer"
           labels={["To Address", "Amount to Send"]}
         />

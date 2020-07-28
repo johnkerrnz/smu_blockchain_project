@@ -1,11 +1,24 @@
 const Organization = artifacts.require("Organization");
-const OrganizationToken = artifacts.require("OrganizationToken");
-
+const OrganizationVoucher = artifacts.require("OrganizationVoucher");
+const MarketPlace = artifacts.require("Market");
 const SimpleStorage = artifacts.require("SimpleStorage");
 
-module.exports = function(deployer) {
-  deployer.deploy(Organization);
-  deployer.deploy(OrganizationToken);
+
+
+
+module.exports = function(deployer, networks, accounts) {
+  let platform = accounts[0];
+  let orgInstance;
+  let orgVoucher;
+  let fee = 100;
+
+  deployer.deploy(Organization).then((_inst) => {
+    orgInstance = _inst;
+    return deployer.deploy(OrganizationVoucher)
+  }).then((_inst) => {
+    orgVoucher = _inst;
+    return deployer.deploy(MarketPlace, orgInstance.address, orgVoucher.address, fee, {from: platform});
+  })
 
   deployer.deploy(SimpleStorage);
 };

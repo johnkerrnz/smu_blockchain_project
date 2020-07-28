@@ -291,7 +291,7 @@ contract MintableToken is StandardToken, Ownable {
     }
 }
 
-contract OrganizationToken is MintableToken {
+contract OrganizationVoucher is MintableToken {
 
     string public constant name = "Organization Voucher";
     string public constant symbol = "OrganizationVoucher";

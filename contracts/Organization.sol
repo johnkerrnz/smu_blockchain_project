@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
-
-contract Organization {
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+contract Organization is ERC721{
 
 
  enum orgState { verified, invalid }
@@ -8,8 +8,8 @@ contract Organization {
      struct organization {
         uint8 numberOfTokens;
         string name;
-       // orgState isVerified;
-        uint8 creationDate
+        orgState isVerified;
+        uint256 creationDate;
     }
 
     uint256 public tokenCount;
@@ -34,10 +34,10 @@ contract Organization {
         tokenCount -= x;
     }
 
-      //function to create a new dice, and add to 'dices' map. requires at least 0.01ETH to create
+      //function to create a new Orgnization, and add to 'organizations' map. requires at least 0.01ETH to create
     function add(
         uint8 numberOfTokens,
-        string name
+        string memory name
     ) public payable returns(uint256) {
         require(numberOfTokens > 0, "Tokens cannot be less than 1");
        // require(msg.value > 0.01 ether, "Require a value of > 0.01 to create organization");
@@ -46,14 +46,14 @@ contract Organization {
         organization memory newOrg = organization(
             numberOfTokens,
             name,
-          //  orgState.invalid,
+            orgState.invalid,
             block.timestamp            
         );
 
         uint256 newOrgId = numOrgs++;
         organizations[newOrgId] = newOrg;   //commit to state variable
-        _mint(msg.sender, newOrgId); //create new dice using _mint()
-        return newOrgId;             //return new diceId
+        _mint(msg.sender, newOrgId); //create new Organization using _mint()
+        return newOrgId;             //return new OrgId
     }
 
     //modifier to ensure a function is callable only by its owner
@@ -69,7 +69,7 @@ contract Organization {
     }
 
     //get organization name
-    function getOrgName(uint256 orgId) public view validDiceId(diceId) returns (string) {
+    function getOrgName(uint256 orgId) public view validOrgId(orgId) returns (string memory) {
         return organizations[orgId].name;
     }
 
@@ -79,7 +79,7 @@ contract Organization {
     }
 
     // set the isVerified flag of organization
-    function approve(uint orgId) public view validDiceId(diceId){
+    function approve(uint orgId) public  validOrgId(orgId){
         organizations[orgId].isVerified= orgState.verified;
     }
 
