@@ -5,9 +5,9 @@ workflow example
 
 1)  NTUC  create / deploy  Organization  + Organization Token 
 2)  NTUC  would add Token 
-3)  DBS Buy NTUC Token 
-4)  DBS gives to employee/community 
-5)  employee/community  burns token at NTUC 
+3)  DBS Buy NTUC Token - Payable
+4)  DBS gives to employee/community - Non Payable
+5)  employee/community  burns token at NTUC - Non Payable
 
 
 

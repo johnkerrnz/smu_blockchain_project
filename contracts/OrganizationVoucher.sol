@@ -293,8 +293,8 @@ contract MintableToken is StandardToken, Ownable {
 
 contract OrganizationToken is MintableToken {
 
-    string public constant name = "Organization Token";
-    string public constant symbol = "OrganizationToken";
+    string public constant name = "Organization Voucher";
+    string public constant symbol = "OrganizationVoucher";
     uint8 public constant decimals = 18;
 
 }

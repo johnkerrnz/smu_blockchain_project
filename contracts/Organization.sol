@@ -2,13 +2,23 @@ pragma solidity ^0.5.0;
 
 contract Organization {
 
-    // name
-    // owner
 
-    // add constructor  which takes name and store both name and owner
+ enum orgState { verified, invalid }
+
+     struct organization {
+        uint8 numberOfTokens;
+        string name;
+       // orgState isVerified;
+        uint8 creationDate
+    }
+
     uint256 public tokenCount;
 
-    function addTokens(uint256 x) public {
+    uint256 public numOrgs = 0;
+
+    mapping(uint256 => organization) public organizations;
+
+   function addTokens(uint256 x) public {
         // only the orgnization owner should be able to add token
         // ntuc  says that they want 1000 token in mkt
         tokenCount += x;
@@ -24,5 +34,53 @@ contract Organization {
         tokenCount -= x;
     }
 
-}
+      //function to create a new dice, and add to 'dices' map. requires at least 0.01ETH to create
+    function add(
+        uint8 numberOfTokens,
+        string name
+    ) public payable returns(uint256) {
+        require(numberOfTokens > 0, "Tokens cannot be less than 1");
+       // require(msg.value > 0.01 ether, "Require a value of > 0.01 to create organization");
 
+        //new organization object
+        organization memory newOrg = organization(
+            numberOfTokens,
+            name,
+          //  orgState.invalid,
+            block.timestamp            
+        );
+
+        uint256 newOrgId = numOrgs++;
+        organizations[newOrgId] = newOrg;   //commit to state variable
+        _mint(msg.sender, newOrgId); //create new dice using _mint()
+        return newOrgId;             //return new diceId
+    }
+
+    //modifier to ensure a function is callable only by its owner
+    modifier ownerOnly(uint256 orgId) {
+        require(ownerOf(orgId) == msg.sender, "Owner only function");
+        _;
+    }
+
+    modifier validOrgId(uint256 orgId) {
+        require(orgId < numOrgs, "Invalid organization Id");
+        //require(organizations[orgId].isValidated==orgState.verified, "Organization is not verified");
+        _;
+    }
+
+    //get organization name
+    function getOrgName(uint256 orgId) public view validDiceId(diceId) returns (string) {
+        return organizations[orgId].name;
+    }
+
+     //get number of tokens with organization
+    function getOrgTokens(uint256 orgId) public view validOrgId(orgId) returns (uint8) {
+        return organizations[orgId].numberOfTokens;
+    }
+
+    // set the isVerified flag of organization
+    function approve(uint orgId) public view validDiceId(diceId){
+        organizations[orgId].isVerified= orgState.verified;
+    }
+
+}
